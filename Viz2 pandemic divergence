@@ -1,1 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pandemic Divergence: Identity Theft vs. Dollar Losses</title>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;600;700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Source Sans 3', sans-serif;
+    background: #fff;
+    color: #1a1a1a;
+    padding: 24px 28px 28px;
+    max-width: 760px;
+    margin: 0 auto;
+  }
+  .chart-title {
+    font-family: 'Source Serif 4', serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #13294B;
+    margin-bottom: 4px;
+  }
+  .chart-subtitle {
+    font-size: 0.82rem;
+    color: #555;
+    margin-bottom: 14px;
+    line-height: 1.45;
+  }
+  .callout-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  .callout {
+    flex: 1;
+    min-width: 180px;
+    border-left: 3px solid;
+    padding: 8px 12px;
+    background: #f8f9fb;
+    border-radius: 0 4px 4px 0;
+  }
+  .callout.navy { border-color: #6FAFC7; }
+  .callout.red { border-color: #EE5E5E; }
+  .callout-label {
+    font-size: 0.73rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 2px;
+  }
+  .callout.navy .callout-label { color: #6FAFC7; }
+  .callout.red .callout-label { color: #EE5E5E; }
+  .callout-stat { font-size: 1.1rem; font-weight: 700; color: #13294B; }
+  .callout-desc { font-size: 0.75rem; color: #666; margin-top: 2px; line-height: 1.3; }
+  .legend {
+    display: flex;
+    gap: 18px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 0.78rem;
+    color: #444;
+  }
+  .legend-bar {
+    width: 16px;
+    height: 14px;
+    border-radius: 2px;
+  }
+  .legend-line {
+    width: 20px;
+    height: 3px;
+    border-radius: 2px;
+  }
+  .chart-wrap {
+    position: relative;
+    height: 280px;
+  }
+  .annotation-box {
+    background: #fff8e1;
+    border: 1px solid #f0d060;
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-size: 0.75rem;
+    color: #7a6000;
+    margin-top: 12px;
+    line-height: 1.45;
+  }
+  .annotation-box strong { color: #5a4500; }
+  .source-note {
+    font-size: 0.72rem;
+    color: #888;
+    margin-top: 12px;
+    line-height: 1.4;
+  }
+</style>
+</head>
+<body>
 
+<div class="chart-title">Two Separate Tracks: Identity Theft vs. Dollar Losses, Illinois</div>
+<div class="chart-subtitle">Identity theft reports spiked during the pandemic and then fell sharply. Dollar losses never came down — they have climbed every year regardless of report counts.</div>
+
+<div class="callout-row">
+  <div class="callout navy">
+    <div class="callout-label">Identity Theft Reports</div>
+    <div class="callout-stat">117,058 → 59,249</div>
+    <div class="callout-desc">Peaked in 2021 driven by pandemic fraud; declined sharply, then rose again by 2025</div>
+  </div>
+  <div class="callout red">
+    <div class="callout-label">Total Reported Dollar Losses</div>
+    <div class="callout-stat">$130.5M → $362.8M</div>
+    <div class="callout-desc">Increased every single year from 2021 to 2025, nearly tripling over the period</div>
+  </div>
+</div>
+
+<div class="legend">
+  <div class="legend-item">
+    <div class="legend-bar" style="background: rgba(111, 175, 199, 0.7);"></div>
+    Identity Theft Reports (left axis)
+  </div>
+  <div class="legend-item">
+    <div class="legend-line" style="background: #EE5E5E;"></div>
+    Total Reported Losses in $M (right axis)
+  </div>
+</div>
+
+<div class="chart-wrap">
+  <canvas id="divergeChart" role="img"
+    aria-label="Chart showing Illinois identity theft reports (bar) and total fraud dollar losses (line) from 2021 to 2025. Identity theft reports fell from 117,058 in 2021 to about 42,000 in 2022–2024 before rising to 59,249 in 2025. Dollar losses rose continuously from $130.5M in 2021 to $362.8M in 2025.">
+  </canvas>
+</div>
+
+<div class="annotation-box">
+  <strong>What happened in 2021?</strong> Illinois saw 117,058 identity theft reports — 922 per 100,000 residents — mostly tied to pandemic-era relief fraud: unemployment scams, stimulus check schemes, and government benefits fraud. By 2022, identity theft reports fell 64% to 42,555. But dollar losses kept climbing on an entirely separate track, suggesting that while opportunistic pandemic fraud faded, more sophisticated and costly scams took its place.
+</div>
+
+<p class="source-note">Source: FTC Consumer Sentinel Network Data Books 2021–2024; FTC Explore Data dashboard (2025 data). Identity theft report figures for 2023 and 2024 are approximate, within the 39,000–43,000 range cited in FTC data. All figures based on voluntarily filed consumer reports.</p>
+
+<script>
+const years = ['2021','2022','2023','2024','2025'];
+const idTheft = [117058, 42555, 41000, 42500, 59249];
+const losses  = [130.5, 205.6, 252.3, 324.3, 362.8];
+
+const ctx = document.getElementById('divergeChart').getContext('2d');
+new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: years,
+    datasets: [
+      {
+        label: 'Identity Theft Reports',
+        data: idTheft,
+        backgroundColor: 'rgba(111, 175, 199, 0.65)',
+        borderColor: '#6FAFC7',
+        borderWidth: 1.5,
+        borderRadius: 4,
+        order: 2,
+        yAxisID: 'y'
+      },
+      {
+        label: 'Total Reported Losses ($M)',
+        data: losses,
+        type: 'line',
+        borderColor: '#EE5E5E',
+        backgroundColor: 'rgba(238,94,94,0.1)',
+        borderWidth: 2.5,
+        pointRadius: 5,
+        pointBackgroundColor: '#EE5E5E',
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
+        fill: false,
+        tension: 0.25,
+        order: 1,
+        yAxisID: 'y2'
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    interaction: { mode: 'index', intersect: false },
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: '#13294B',
+        titleFont: { family: "'Source Sans 3', sans-serif", size: 13, weight: '600' },
+        bodyFont: { family: "'Source Sans 3', sans-serif", size: 12 },
+        padding: 12,
+        cornerRadius: 6,
+        callbacks: {
+          label: (item) => {
+            if (item.datasetIndex === 0) {
+              const note = item.dataIndex >= 2 && item.dataIndex <= 3 ? ' (approx.)' : '';
+              return `  Identity Theft Reports: ${item.raw.toLocaleString()}${note}`;
+            } else {
+              return `  Total Reported Losses: $${item.raw}M`;
+            }
+          }
+        }
+      }
+    },
+    scales: {
+      x: {
+        grid: { display: false },
+        ticks: { font: { family: "'Source Sans 3', sans-serif", size: 12 }, color: '#444' },
+        border: { color: '#e0e0e0' }
+      },
+      y: {
+        position: 'left',
+        grid: { color: 'rgba(0,0,0,0.06)' },
+        ticks: {
+          font: { family: "'Source Sans 3', sans-serif", size: 11 },
+          color: '#6FAFC7',
+          callback: v => v.toLocaleString()
+        },
+        border: { display: false },
+        title: {
+          display: true,
+          text: 'Identity Theft Reports',
+          font: { family: "'Source Sans 3', sans-serif", size: 11, weight: '600' },
+          color: '#6FAFC7'
+        }
+      },
+      y2: {
+        position: 'right',
+        grid: { display: false },
+        min: 0,
+        max: 450,
+        ticks: {
+          font: { family: "'Source Sans 3', sans-serif", size: 11 },
+          color: '#EE5E5E',
+          callback: v => `$${v}M`
+        },
+        border: { display: false },
+        title: {
+          display: true,
+          text: 'Reported Losses',
+          font: { family: "'Source Sans 3', sans-serif", size: 11, weight: '600' },
+          color: '#EE5E5E'
+        }
+      }
+    }
+  }
+});
+</script>
+</body>
+</html>
