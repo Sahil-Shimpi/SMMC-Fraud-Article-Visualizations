@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Illinois Fraud Trends 2021–2025</title>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;600;700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Source Sans 3', sans-serif;
+    background: #fff;
+    color: #1a1a1a;
+    padding: 24px 28px 28px;
+    max-width: 760px;
+    margin: 0 auto;
+  }
+  .chart-title {
+    font-family: 'Source Serif 4', serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #13294B;
+    margin-bottom: 4px;
+  }
+  .chart-subtitle {
+    font-size: 0.82rem;
+    color: #555;
+    margin-bottom: 16px;
+    line-height: 1.4;
+  }
+  .controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .toggle-btn {
+    background: #fff;
+    border: 1.5px solid #13294B;
+    color: #13294B;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 5px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    letter-spacing: 0.02em;
+  }
+  .toggle-btn:hover, .toggle-btn.active {
+    background: #13294B;
+    color: #fff;
+  }
+  .legend {
+    display: flex;
+    gap: 18px;
+    margin-left: auto;
+    flex-wrap: wrap;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.76rem;
+    color: #444;
+  }
+  .legend-swatch {
+    width: 14px;
+    height: 14px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .legend-line {
+    width: 18px;
+    height: 3px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .chart-wrap {
+    position: relative;
+    height: 300px;
+  }
+  canvas { display: block; }
+
+  /* Table */
+  .data-table {
+    display: none;
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.82rem;
+    margin-top: 8px;
+  }
+  .data-table.visible { display: table; }
+  .data-table thead tr {
+    background: #13294B;
+    color: #fff;
+  }
+  .data-table th {
+    padding: 9px 12px;
+    text-align: left;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    font-size: 0.78rem;
+  }
+  .data-table th:not(:first-child),
+  .data-table td:not(:first-child) { text-align: right; }
+  .data-table td {
+    padding: 8px 12px;
+    border-bottom: 1px solid #e8e8e8;
+    color: #222;
+  }
+  .data-table tr:nth-child(even) td { background: #f7f8fa; }
+  .data-table tr:last-child td { border-bottom: none; }
+  .highlight-cell { font-weight: 600; color: #0D605E; }
+
+  .source-note {
+    font-size: 0.72rem;
+    color: #888;
+    margin-top: 14px;
+    line-height: 1.4;
+  }
+</style>
+</head>
+<body>
+
+<div class="chart-title">Illinois Fraud Trends, 2021–2025</div>
+<div class="chart-subtitle">Total reported dollar losses climbed every year, even as the number of reports fluctuated. The 2021 spike in reports was driven by pandemic-related identity theft.</div>
+
+<div class="controls">
+  <button class="toggle-btn active" id="btnChart" onclick="showView('chart')" aria-pressed="true">Chart View</button>
+  <button class="toggle-btn" id="btnTable" onclick="showView('table')" aria-pressed="false">Data Table</button>
+  <div class="legend" id="chartLegend">
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:#13294B;"></div>
+      Total Reported Losses
+    </div>
+    <div class="legend-item">
+      <div class="legend-line" style="background:#EE5E5E;"></div>
+      Median Loss per Report
+    </div>
+  </div>
+</div>
+
+<div class="chart-wrap" id="chartWrap">
+  <canvas id="myChart" role="img" aria-label="Bar chart showing Illinois fraud dollar losses rising from $130.5 million in 2021 to $362.8 million in 2025, with a secondary line showing median loss per report ranging from $324 to $600."></canvas>
+</div>
+
+<table class="data-table" id="dataTable" aria-label="Illinois fraud data by year, 2021 to 2025">
+  <thead>
+    <tr>
+      <th>Year</th>
+      <th>Total Reports</th>
+      <th>Fraud Reports</th>
+      <th>Total Reported Losses</th>
+      <th>Median Loss</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>2021</td><td>266,545</td><td>86,519</td><td class="highlight-cell">$130.5M</td><td>$415</td></tr>
+    <tr><td>2022</td><td>176,775</td><td>70,715</td><td class="highlight-cell">$205.6M</td><td>$600</td></tr>
+    <tr><td>2023</td><td>186,554</td><td>69,547</td><td class="highlight-cell">$252.3M</td><td>$499</td></tr>
+    <tr><td>2024</td><td>231,332</td><td>72,063</td><td class="highlight-cell">$324.3M</td><td>$401</td></tr>
+    <tr><td>2025</td><td>213,686</td><td>92,431</td><td class="highlight-cell">$362.8M</td><td>$324</td></tr>
+  </tbody>
+</table>
+
+<p class="source-note">Source: FTC Consumer Sentinel Network Data Books 2021–2024; FTC Explore Data dashboard (2025 data). Total reports and fraud reports reflect all FTC-classified categories. Dollar figures based on voluntarily filed consumer reports.</p>
+
+<script>
+const data = {
+  years: ['2021','2022','2023','2024','2025'],
+  losses: [130.5, 205.6, 252.3, 324.3, 362.8],
+  medians: [415, 600, 499, 401, 324],
+  totalReports: [266545, 176775, 186554, 231332, 213686],
+  fraudReports: [86519, 70715, 69547, 72063, 92431]
+};
+
+const ctx = document.getElementById('myChart').getContext('2d');
+const chart = new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: data.years,
+    datasets: [
+      {
+        label: 'Total Reported Losses ($M)',
+        data: data.losses,
+        backgroundColor: 'rgba(19, 41, 75, 0.88)',
+        borderColor: '#13294B',
+        borderWidth: 0,
+        borderRadius: 4,
+        order: 2,
+        yAxisID: 'y'
+      },
+      {
+        label: 'Median Loss ($)',
+        data: data.medians,
+        type: 'line',
+        borderColor: '#EE5E5E',
+        backgroundColor: '#EE5E5E',
+        borderWidth: 2.5,
+        pointRadius: 5,
+        pointBackgroundColor: '#EE5E5E',
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
+        tension: 0.3,
+        order: 1,
+        yAxisID: 'y2'
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    interaction: { mode: 'index', intersect: false },
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: '#13294B',
+        titleFont: { family: "'Source Sans 3', sans-serif", size: 13, weight: '600' },
+        bodyFont: { family: "'Source Sans 3', sans-serif", size: 12 },
+        padding: 12,
+        cornerRadius: 6,
+        callbacks: {
+          title: (items) => `${items[0].label}`,
+          label: (item) => {
+            const i = item.dataIndex;
+            if (item.datasetIndex === 0) {
+              return [
+                `  Total Losses: $${data.losses[i]}M`,
+                `  Total Reports: ${data.totalReports[i].toLocaleString()}`,
+                `  Fraud Reports: ${data.fraudReports[i].toLocaleString()}`
+              ];
+            } else {
+              return `  Median Loss: $${data.medians[i]}`;
+            }
+          }
+        }
+      }
+    },
+    scales: {
+      x: {
+        grid: { display: false },
+        ticks: {
+          font: { family: "'Source Sans 3', sans-serif", size: 12 },
+          color: '#444'
+        },
+        border: { color: '#e0e0e0' }
+      },
+      y: {
+        position: 'left',
+        grid: { color: 'rgba(0,0,0,0.06)' },
+        ticks: {
+          font: { family: "'Source Sans 3', sans-serif", size: 11 },
+          color: '#13294B',
+          callback: v => `$${v}M`
+        },
+        border: { display: false },
+        title: {
+          display: true,
+          text: 'Total Reported Losses',
+          font: { family: "'Source Sans 3', sans-serif", size: 11, weight: '600' },
+          color: '#13294B'
+        }
+      },
+      y2: {
+        position: 'right',
+        grid: { display: false },
+        ticks: {
+          font: { family: "'Source Sans 3', sans-serif", size: 11 },
+          color: '#EE5E5E',
+          callback: v => `$${v}`
+        },
+        border: { display: false },
+        title: {
+          display: true,
+          text: 'Median Loss per Report',
+          font: { family: "'Source Sans 3', sans-serif", size: 11, weight: '600' },
+          color: '#EE5E5E'
+        }
+      }
+    }
+  }
+});
+
+function showView(view) {
+  const chartWrap = document.getElementById('chartWrap');
+  const table = document.getElementById('dataTable');
+  const legend = document.getElementById('chartLegend');
+  const btnChart = document.getElementById('btnChart');
+  const btnTable = document.getElementById('btnTable');
+
+  if (view === 'chart') {
+    chartWrap.style.display = 'block';
+    table.classList.remove('visible');
+    legend.style.display = 'flex';
+    btnChart.classList.add('active');
+    btnTable.classList.remove('active');
+    btnChart.setAttribute('aria-pressed','true');
+    btnTable.setAttribute('aria-pressed','false');
+  } else {
+    chartWrap.style.display = 'none';
+    table.classList.add('visible');
+    legend.style.display = 'none';
+    btnChart.classList.remove('active');
+    btnTable.classList.add('active');
+    btnChart.setAttribute('aria-pressed','false');
+    btnTable.setAttribute('aria-pressed','true');
+  }
+}
+</script>
+</body>
+</html>
