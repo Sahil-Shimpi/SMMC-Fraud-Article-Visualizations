@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>If You've Been Scammed: What to Do Next</title>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;600;700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Source Sans 3', sans-serif;
+    background: #fff;
+    color: #1a1a1a;
+    padding: 24px 28px 28px;
+    max-width: 680px;
+    margin: 0 auto;
+  }
+  .chart-title {
+    font-family: 'Source Serif 4', serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #13294B;
+    margin-bottom: 4px;
+  }
+  .chart-subtitle {
+    font-size: 0.82rem;
+    color: #555;
+    margin-bottom: 6px;
+    line-height: 1.45;
+  }
+  .speed-note {
+    font-size: 0.78rem;
+    background: #fff3e0;
+    border-left: 3px solid #f5a623;
+    color: #7a4800;
+    padding: 8px 12px;
+    border-radius: 0 4px 4px 0;
+    margin-bottom: 22px;
+    line-height: 1.45;
+  }
+  .speed-note strong { color: #5a3400; }
+
+  .steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    position: relative;
+  }
+
+  /* Vertical connector line */
+  .steps::before {
+    content: '';
+    position: absolute;
+    left: 22px;
+    top: 28px;
+    bottom: 28px;
+    width: 2px;
+    background: linear-gradient(to bottom, #13294B, #0D605E);
+    z-index: 0;
+  }
+
+  .step {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    position: relative;
+    z-index: 1;
+    padding-bottom: 0;
+    margin-bottom: 6px;
+  }
+
+  .step-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    flex-shrink: 0;
+  }
+
+  .step-circle {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 2;
+    border: 2.5px solid #fff;
+    box-shadow: 0 0 0 2px rgba(19,41,75,0.25);
+  }
+
+  .step-right {
+    flex: 1;
+    background: #f7f8fa;
+    border-radius: 8px;
+    padding: 12px 14px 12px;
+    margin-bottom: 12px;
+    border: 1.5px solid #eaecef;
+    position: relative;
+  }
+
+  /* triangle pointer */
+  .step-right::before {
+    content: '';
+    position: absolute;
+    left: -8px;
+    top: 14px;
+    border-top: 7px solid transparent;
+    border-bottom: 7px solid transparent;
+    border-right: 8px solid #eaecef;
+  }
+  .step-right::after {
+    content: '';
+    position: absolute;
+    left: -6px;
+    top: 15px;
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+    border-right: 7px solid #f7f8fa;
+  }
+
+  .step-num {
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 2px;
+  }
+  .step-title {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: #13294B;
+    margin-bottom: 4px;
+    line-height: 1.2;
+  }
+  .step-body {
+    font-size: 0.78rem;
+    color: #555;
+    line-height: 1.45;
+    margin-bottom: 6px;
+  }
+  .step-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 4px;
+  }
+  .step-link {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 3px;
+    text-decoration: none;
+    transition: opacity 0.15s;
+  }
+  .step-link:hover { opacity: 0.8; }
+  .step-link.navy { background: #13294B; color: #fff; }
+  .step-link.teal { background: #0D605E; color: #fff; }
+  .step-link.salmon { background: #EE5E5E; color: #fff; }
+  .step-link.gray { background: #e2e5ea; color: #333; }
+
+  .stat-badge {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #0D605E;
+    background: #e8f4f3;
+    border-radius: 10px;
+    padding: 2px 9px;
+    margin-left: 4px;
+    vertical-align: middle;
+  }
+
+  .final-note {
+    background: #f2f5f9;
+    border-radius: 6px;
+    padding: 12px 14px;
+    font-size: 0.78rem;
+    color: #444;
+    line-height: 1.5;
+    margin-top: 4px;
+    border-left: 3px solid #13294B;
+  }
+  .final-note strong { color: #13294B; }
+
+  .source-note {
+    font-size: 0.72rem;
+    color: #888;
+    margin-top: 14px;
+    line-height: 1.4;
+  }
+</style>
+</head>
+<body>
+
+<div class="chart-title">If You've Been Scammed: What to Do Next</div>
+<div class="chart-subtitle">It was not your fault — these scams are designed to work. But speed matters. Follow these steps as quickly as possible.</div>
+<div class="speed-note"><strong>Act fast.</strong> The FBI's IC3 Recovery Asset Team reported a 66% success rate in freezing fraudulent wire transfers — but only when victims reported quickly. Every hour matters.</div>
+
+<ol class="steps" aria-label="Steps to take after being scammed">
+
+  <li class="step">
+    <div class="step-left">
+      <div class="step-circle" style="background:#13294B;" aria-hidden="true">🏦</div>
+    </div>
+    <div class="step-right">
+      <div class="step-num">Step 1 — Do This First</div>
+      <div class="step-title">Contact Your Bank or Financial Institution</div>
+      <div class="step-body">Call the number on the back of your card or on your bank's official website — not any number provided in the suspicious message. Ask them to freeze affected accounts, reverse transactions if possible, and flag for fraud investigation. If a wire transfer was involved, ask specifically about recall procedures.</div>
+    </div>
+  </li>
+
+  <li class="step">
+    <div class="step-left">
+      <div class="step-circle" style="background:#2a4a7f;" aria-hidden="true">🔒</div>
+    </div>
+    <div class="step-right">
+      <div class="step-num">Step 2</div>
+      <div class="step-title">Change Your Passwords</div>
+      <div class="step-body">Change the passwords for any accounts that may have been compromised — email, bank, investment, shopping. If you reused any password across multiple accounts, change all of them. Enable two-factor authentication where available.</div>
+    </div>
+  </li>
+
+  <li class="step">
+    <div class="step-left">
+      <div class="step-circle" style="background:#3a6a6a;" aria-hidden="true">📝</div>
+    </div>
+    <div class="step-right">
+      <div class="step-num">Step 3</div>
+      <div class="step-title">File Reports</div>
+      <div class="step-body">Your report helps agencies track patterns and warn others. File even if you didn't lose money — frequency data matters. If investment fraud was involved, also file with the SEC.</div>
+      <div class="step-links">
+        <a class="step-link navy" href="https://reportfraud.ftc.gov" target="_blank" rel="noopener">FTC: ReportFraud.ftc.gov</a>
+        <a class="step-link teal" href="https://www.ic3.gov" target="_blank" rel="noopener">FBI IC3: ic3.gov</a>
+        <a class="step-link salmon" href="https://www.sec.gov/tcr" target="_blank" rel="noopener">SEC (investment fraud): sec.gov/tcr</a>
+        <a class="step-link gray" href="https://illinoisattorneygeneral.gov/consumers/complaints/" target="_blank" rel="noopener">Illinois AG's Office</a>
+      </div>
+    </div>
+  </li>
+
+  <li class="step">
+    <div class="step-left">
+      <div class="step-circle" style="background:#0D605E;" aria-hidden="true">📊</div>
+    </div>
+    <div class="step-right">
+      <div class="step-num">Step 4</div>
+      <div class="step-title">Monitor Your Credit</div>
+      <div class="step-body">Place a fraud alert or credit freeze with each of the three major credit bureaus. A credit freeze is free and prevents anyone from opening new accounts in your name — you can lift it anytime.</div>
+      <div class="step-links">
+        <a class="step-link navy" href="https://www.equifax.com/personal/credit-report-services/credit-freeze/" target="_blank" rel="noopener">Equifax</a>
+        <a class="step-link teal" href="https://www.experian.com/freeze/center.html" target="_blank" rel="noopener">Experian</a>
+        <a class="step-link gray" href="https://www.transunion.com/credit-freeze" target="_blank" rel="noopener">TransUnion</a>
+      </div>
+    </div>
+  </li>
+
+  <li class="step">
+    <div class="step-left">
+      <div class="step-circle" style="background:#6FAFC7;" aria-hidden="true">🤝</div>
+    </div>
+    <div class="step-right">
+      <div class="step-num">Step 5</div>
+      <div class="step-title">Talk to Someone You Trust</div>
+      <div class="step-body">Scam victims often feel embarrassed or ashamed — and those feelings can delay recovery. You don't have to handle this alone. If you are a U of I student, SMMC is here to help you work through the financial side without judgment.</div>
+      <div class="step-links">
+        <a class="step-link navy" href="https://smmc.uillinois.edu" target="_blank" rel="noopener">SMMC (U of I students)</a>
+      </div>
+    </div>
+  </li>
+
+</ol>
+
+<div class="final-note">
+  <strong>Remember:</strong> Keeping your guard up all the time is not realistic, and no one should expect that of themselves. The point is not constant vigilance — it is building a few habits that make it harder for someone to rush you into a decision. If a scam does get through despite those habits, that does not change what is true: it was not your fault. What matters now is what you do next.
+</div>
+
+<p class="source-note">Source: FBI Internet Crime Complaint Center 2024 Annual Report (April 2025). The 66% wire transfer recovery figure refers to FBI IC3 Recovery Asset Team interventions. Recovery outcomes vary by case type and cannot be guaranteed.</p>
+
+</body>
+</html>
