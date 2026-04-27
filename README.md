@@ -1,1 +1,1 @@
-# SMMC-Frraud-Article-Visualizations
+# SMMC-Fraud-Article-Visualizations
