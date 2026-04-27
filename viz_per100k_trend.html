@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Illinois Fraud Reports per 100K, 2021–2025</title>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;600;700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Source Sans 3', sans-serif;
+    background: #fff;
+    color: #1a1a1a;
+    padding: 24px 28px 28px;
+    max-width: 760px;
+    margin: 0 auto;
+  }
+  .chart-title {
+    font-family: 'Source Serif 4', serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #13294B;
+    margin-bottom: 4px;
+  }
+  .chart-subtitle {
+    font-size: 0.82rem;
+    color: #555;
+    margin-bottom: 16px;
+    line-height: 1.45;
+  }
+  .legend {
+    display: flex;
+    gap: 18px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 0.78rem;
+    color: #444;
+  }
+  .legend-swatch {
+    width: 14px;
+    height: 14px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .chart-wrap {
+    position: relative;
+    height: 320px;
+  }
+  canvas { display: block; }
+  .source-note {
+    font-size: 0.72rem;
+    color: #888;
+    margin-top: 14px;
+    line-height: 1.4;
+  }
+</style>
+</head>
+<body>
+
+<div class="chart-title">Illinois Fraud Reports per 100K Population, 2021–2025</div>
+<div class="chart-subtitle">Total reports per capita fell sharply after the 2021 pandemic spike, then climbed again by 2024. Identity theft as a share of total reports has grown since 2022.</div>
+
+<div class="legend">
+  <div class="legend-item">
+    <div class="legend-swatch" style="background:#13294B;"></div>
+    Identity Theft Reports
+  </div>
+  <div class="legend-item">
+    <div class="legend-swatch" style="background:#6FAFC7;"></div>
+    Other Fraud Reports
+  </div>
+</div>
+
+<div class="chart-wrap">
+  <canvas id="perCapitaChart" role="img"
+    aria-label="Stacked bar chart showing Illinois fraud reports per 100,000 population from 2021 to 2025. In 2021, identity theft accounted for 922 of 1,178 total reports per 100K — a pandemic-driven spike. Identity theft fell to around 310 to 335 per 100K in 2022 and 2023 before rising to 467 in 2025. Total reports per 100K were 1,178 in 2021, dropped to 1,057 in 2022, and reached a post-pandemic high of 1,484 in 2024 before falling to 1,217 in 2025.">
+  </canvas>
+</div>
+
+<p class="source-note">Visualization by Sahil Shimpi. Data source(s): FTC Consumer Sentinel Network Data Books, 2021–2025. Per capita figures calculated using Illinois population estimates. All figures based on voluntarily filed consumer reports.</p>
+
+<script>
+const years = ['2021', '2022', '2023', '2024', '2025'];
+const identityTheft = [922, 335, 310, 339, 467];
+const totals        = [1178, 1057, 1160, 1484, 1217];
+const otherFraud    = totals.map((t, i) => t - identityTheft[i]);
+// otherFraud: 256, 722, 850, 1145, 750
+
+const ctx = document.getElementById('perCapitaChart').getContext('2d');
+
+// Custom plugin to draw data labels inside/outside bars
+const labelPlugin = {
+  id: 'stackedLabels',
+  afterDatasetsDraw(chart) {
+    const { ctx, data } = chart;
+    ctx.save();
+    ctx.font = "600 11px 'Source Sans 3', sans-serif";
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+
+    data.datasets.forEach((dataset, datasetIndex) => {
+      const meta = chart.getDatasetMeta(datasetIndex);
+      meta.data.forEach((bar, index) => {
+        const value = dataset.data[index];
+        const { x, y, height } = bar;
+        const centerY = y + height / 2;
+        const label = value.toLocaleString();
+
+        // Only draw if there's enough room (height > 18px)
+        if (height > 18) {
+          ctx.fillStyle = '#ffffff';
+          ctx.fillText(label, x, centerY);
+        }
+      });
+    });
+
+    // Draw total labels above each full stack
+    const meta0 = chart.getDatasetMeta(0); // identity theft (bottom)
+    const meta1 = chart.getDatasetMeta(1); // other fraud (top)
+    ctx.font = "700 11.5px 'Source Sans 3', sans-serif";
+    ctx.fillStyle = '#13294B';
+    ctx.textBaseline = 'bottom';
+
+    totals.forEach((total, i) => {
+      const topBar = meta1.data[i];
+      ctx.fillText(total.toLocaleString(), topBar.x, topBar.y - 4);
+    });
+
+    ctx.restore();
+  }
+};
+
+new Chart(ctx, {
+  type: 'bar',
+  plugins: [labelPlugin],
+  data: {
+    labels: years,
+    datasets: [
+      {
+        label: 'Identity Theft Reports',
+        data: identityTheft,
+        backgroundColor: 'rgba(19, 41, 75, 0.9)',
+        borderColor: '#13294B',
+        borderWidth: 0,
+        borderRadius: { topLeft: 0, topRight: 0, bottomLeft: 4, bottomRight: 4 },
+        stack: 'stack'
+      },
+      {
+        label: 'Other Fraud Reports',
+        data: otherFraud,
+        backgroundColor: 'rgba(111, 175, 199, 0.85)',
+        borderColor: '#6FAFC7',
+        borderWidth: 0,
+        borderRadius: { topLeft: 4, topRight: 4, bottomLeft: 0, bottomRight: 0 },
+        stack: 'stack'
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    interaction: { mode: 'index', intersect: false },
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: '#13294B',
+        titleFont: { family: "'Source Sans 3', sans-serif", size: 13, weight: '600' },
+        bodyFont: { family: "'Source Sans 3', sans-serif", size: 12 },
+        padding: 12,
+        cornerRadius: 6,
+        callbacks: {
+          title: items => items[0].label,
+          afterBody: items => {
+            const i = items[0].dataIndex;
+            return `  Total: ${totals[i].toLocaleString()} per 100K`;
+          },
+          label: item => {
+            if (item.datasetIndex === 0) return `  Identity Theft: ${identityTheft[item.dataIndex].toLocaleString()} per 100K`;
+            return `  Other Fraud: ${otherFraud[item.dataIndex].toLocaleString()} per 100K`;
+          }
+        }
+      }
+    },
+    scales: {
+      x: {
+        stacked: true,
+        grid: { display: false },
+        ticks: {
+          font: { family: "'Source Sans 3', sans-serif", size: 12 },
+          color: '#444'
+        },
+        border: { color: '#e0e0e0' },
+        title: {
+          display: true,
+          text: 'Year',
+          font: { family: "'Source Sans 3', sans-serif", size: 11, weight: '600' },
+          color: '#666'
+        }
+      },
+      y: {
+        stacked: true,
+        grid: { color: 'rgba(0,0,0,0.06)' },
+        max: 1800,
+        ticks: {
+          font: { family: "'Source Sans 3', sans-serif", size: 11 },
+          color: '#666',
+          callback: v => v.toLocaleString()
+        },
+        border: { display: false },
+        title: {
+          display: true,
+          text: 'Reports per 100K Population',
+          font: { family: "'Source Sans 3', sans-serif", size: 11, weight: '600' },
+          color: '#666'
+        }
+      }
+    }
+  }
+});
+</script>
+</body>
+</html>
