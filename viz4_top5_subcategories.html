@@ -176,32 +176,6 @@
   <strong>Investment fraud alone accounts for nearly half of all Illinois fraud losses.</strong> The Miscellaneous Investments &amp; Investment Advice category totals $175.9M — more than the remaining four categories combined — despite having far fewer reports than government or business imposter scams.
 </div>
 
-<button class="toggle-btn" id="defBtn" onclick="toggleDefs()">Show Category Definitions ▾</button>
-
-<div class="definitions" id="definitions" role="region" aria-label="Fraud category definitions">
-  <div class="def-title">What Each Category Means</div>
-  <div class="def-item">
-    <div class="def-dot" style="background:#13294B;"></div>
-    <div class="def-text"><strong>Miscellaneous Investments &amp; Investment Advice:</strong> Fraudulent schemes promising high returns — often involving cryptocurrency, forex, or fake platforms. Victims are typically recruited via social media or messaging apps and may invest repeatedly before discovering the fraud.</div>
-  </div>
-  <div class="def-item">
-    <div class="def-dot" style="background:#EE5E5E;"></div>
-    <div class="def-text"><strong>Romance Scams:</strong> Scammers build a fake romantic relationship online — often for weeks or months — then request money for emergencies, travel, or investment opportunities. Victims rarely meet the person in real life.</div>
-  </div>
-  <div class="def-item">
-    <div class="def-dot" style="background:#0D605E;"></div>
-    <div class="def-text"><strong>Government Imposters:</strong> Someone pretending to be from the IRS, Social Security Administration, Medicare, or another government agency, typically threatening arrest, benefit suspension, or legal action unless the victim pays immediately.</div>
-  </div>
-  <div class="def-item">
-    <div class="def-dot" style="background:#6FAFC7;"></div>
-    <div class="def-text"><strong>Business Imposters:</strong> Scammers pose as representatives of well-known companies (Amazon, Apple, banks) warning about account problems, unauthorized charges, or security breaches — then asking for payment or account access.</div>
-  </div>
-  <div class="def-item">
-    <div class="def-dot" style="background:#8e6bbf;"></div>
-    <div class="def-text"><strong>Job Scams &amp; Employment Agencies:</strong> Fake job offers — often for remote, flexible, or high-paying work — used to collect personal information, advance-fee payments, or to recruit victims into money muling or reshipping schemes.</div>
-  </div>
-</div>
-
 <ul class="bar-list" aria-label="Top 5 Illinois fraud subcategories by dollar loss in 2025">
 
   <li class="bar-item">
@@ -271,17 +245,9 @@
 
 </ul>
 
-<p class="source-note">Source: FTC Explore Data — Consumer Sentinel Network, Illinois consumers, 2025. Subcategories with 10 or fewer reports are excluded from FTC state-level data. Figures based on voluntarily filed consumer reports.</p>
-
+<p class="source-note">Data source(s): FTC Explore Data — Consumer Sentinel Network, Illinois consumers, 2025. Subcategories with 10 or fewer reports are excluded from FTC state-level data. Figures based on voluntarily filed consumer reports.</p>
+ 
 <script>
-function toggleDefs() {
-  const defs = document.getElementById('definitions');
-  const btn = document.getElementById('defBtn');
-  const isVisible = defs.classList.contains('visible');
-  defs.classList.toggle('visible');
-  btn.textContent = isVisible ? 'Show Category Definitions ▾' : 'Hide Category Definitions ▴';
-}
-
 // Animate bars on load
 window.addEventListener('load', () => {
   const fills = document.querySelectorAll('.bar-fill');
